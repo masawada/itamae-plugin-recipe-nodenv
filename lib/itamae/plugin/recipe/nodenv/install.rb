@@ -1,3 +1,5 @@
+package 'git'
+
 scheme      = node[:nodenv][:scheme]
 nodenv_root = node[:nodenv][:nodenv_root]
 
