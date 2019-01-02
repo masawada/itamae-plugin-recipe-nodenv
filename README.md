@@ -1,8 +1,6 @@
 # Itamae::Plugin::Recipe::Nodenv
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/itamae/plugin/recipe/nodenv`. To experiment with that code, run `bin/console` for an interactive prompt.
-
-TODO: Delete this and the text above, and describe your gem
+[itamae](https://github.com/itamae-kitchen/itamae) plugin to install node with nodenv
 
 ## Installation
 
@@ -22,13 +20,101 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+### System wide installation
 
-## Development
+Install nodenv into /usr/local/nodenv
 
-After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake spec` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
+#### Recipe
 
-To install this gem onto your local machine, run `bundle exec rake install`. To release a new version, update the version number in `version.rb`, and then run `bundle exec rake release`, which will create a git tag for the version, push git commits and tags, and push the `.gem` file to [rubygems.org](https://rubygems.org).
+```ruby
+include_recipe "nodenv::system"
+```
+
+#### Configuration
+
+Write a yaml file:
+
+```yaml
+# node.yaml
+nodenv:
+  global:
+    10.15.0
+  versions:
+    - 11.6.0
+    - 10.15.0
+
+  # used in git clone (default: git)
+  scheme: https
+
+  # nodenv root dir (default: /usr/local/nodenv)
+  nodenv_root: /path/to/nodenv_root
+```
+
+and execute:
+
+```console
+$ itamae -y node.yml
+```
+
+### User local installation
+
+#### Recipe
+
+```ruby
+include_recipe "nodenv::user"
+```
+
+#### Configuration
+
+```yaml
+# node.yaml
+nodenv:
+  user: masawada
+  global:
+    10.15.0
+  versions:
+    - 11.6.0
+    - 10.15.0
+
+  # used in git clone (default: git)
+  scheme: https
+
+  # nodenv root dir (default: $HOME/.nodenv)
+  nodenv_root: /path/to/nodenv_root
+```
+
+and execute:
+
+```console
+$ itamae -y node.yml
+```
+
+## mitamae support
+
+It can be used as [mitamae](https://github.com/itamae-kitchen/mitamae) plugin.
+
+Put this repository under `./plugins` as a git submodule:
+
+```console
+$ git submodule add https://github.com/masawada/itamae-plugin-recipe-nodenv.git plugins/itamae-plugin-recipe-nodenv
+```
+
+and write a recipe:
+
+```ruby
+node.reverse_merge!(
+  nodenv: {
+    user: 'masawada',
+    global: '10.15.0',
+    versions: %w[
+      11.6.0
+      10.15.0
+    ],
+  },
+)
+
+include_recipe "nodenv::user"
+```
 
 ## Contributing
 
