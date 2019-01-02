@@ -35,7 +35,7 @@ include_recipe "nodenv::system"
 Write a yaml file:
 
 ```yaml
-# node.yaml
+# node.yml
 nodenv:
   global:
     10.15.0
@@ -66,8 +66,10 @@ include_recipe "nodenv::user"
 
 #### Configuration
 
+Write a yaml file:
+
 ```yaml
-# node.yaml
+# node.yml
 nodenv:
   user: masawada
   global:
